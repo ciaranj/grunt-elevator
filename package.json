@@ -1,0 +1,29 @@
+{
+  "name": "grunt-elevator",
+  "version": "1.0.0",
+  "description": "Automatically elevate your grunt script's UAC privileges in windows",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ciaranj/grunt-elevator.git"
+  },
+  "keywords": [
+    "windows",
+    "uac",
+    "elevate",
+    "grunt"
+  ],
+  "author": "ciaranj@gmail.com",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ciaranj/grunt-elevator/issues"
+  },
+  "homepage": "https://github.com/ciaranj/grunt-elevator#readme",
+  "dependencies": {
+    "@mh-cbon/aghfabsowecwn": "^2.0.4",
+    "hooker": "^0.2.3"
+  }
+}
