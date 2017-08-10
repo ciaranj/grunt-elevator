@@ -21,7 +21,7 @@ if (!String.prototype.hashCode) {
 //Usually we would use the PID but this changes between normal and elevated states.
 var envFile = path.join(process.env["TEMP"], "path." + process.argv.join().hashCode() + ".tmp");
 
-module.exports = function (grunt) {
+module.exports = function (grunt, config) {
 
   var save_env = function () {
     if (grunt.file.exists(envFile)) {
@@ -30,13 +30,15 @@ module.exports = function (grunt) {
     }
     var env = {}
     //The environment variable names to save.
-    var names = grunt.config.get("elevator.env.names");
+    var names = config.env.names;
     if (names) {
-      var cb = grunt.config.get("elevator.env.cb");
+      //The environment variable call back.
+      var cb = config.env.cb;
       for (var a in names) {
         var key = names[a];
         var value = process.env[key];
         if (cb) {
+          //If the call back returned a value then overwrite the local value.
           value = cb(key, value) || value;
         }
         env[key] = value;
@@ -59,9 +61,49 @@ module.exports = function (grunt) {
       process.env[key] = value;
       grunt.verbose.writeln("Restored environment variable: " + key + " => " + value);
     }
-    grunt.file.delete(envFile, { force: true });
+    grunt.file.delete(envFile, {force: true});
     grunt.verbose.writeln("Restored environment variables from " + envFile);
   };
+
+  function should_elevate(name, args) {
+    var triggers = config.triggers;
+    if (!triggers || !triggers.length) {
+      grunt.verbose.writeln("No elevation triggers have been defined, will elevate.");
+      return true;
+    }
+    for (var a = 0; a < triggers.length; a++) {
+      var trigger = triggers[a];
+      if (typeof (trigger) == 'string' || trigger instanceof String) {
+        var pattern = get_pattern(trigger);
+        if (pattern) {
+          trigger = pattern;
+        }
+        else {
+          if (name == trigger || args == trigger) {
+            grunt.verbose.writeln("Elevation trigger matches string: " + trigger + ", will elevate");
+            return true;
+          }
+          return;
+        }
+      }
+      if (trigger instanceof RegExp) {
+        if (trigger.test(name) || trigger.test(args)) {
+          grunt.verbose.writeln("Elevation trigger matches pattern: " + trigger + ", will elevate");
+          return true;
+        }
+      }
+    }
+    grunt.verbose.writeln("No elevation task trigger matches, won't elevate.");
+    return false;
+  }
+
+  function get_pattern(trigger) {
+    var pattern = /regex:(.*)/.exec(trigger);
+    if (pattern) {
+      grunt.verbose.writeln("Extracted pattern from trigger: " + pattern[1])
+      return new RegExp(pattern[1]);
+    }
+  }
 
   var elevatedOk = false;
 
@@ -69,7 +111,10 @@ module.exports = function (grunt) {
     pre: function (context, fn, done, asyncDone) {
       try {
         if (!elevatedOk) {
-          execSync("net session", { "stdio": "ignore" });
+          if (!should_elevate(context.name, context.nameArgs)) {
+            return;
+          }
+          execSync("net session", {"stdio": "ignore"});
           // If we make it to here carry on as normal.
           grunt.log.ok("Gruntfile is being executed by an elevated user.");
           restore_env();
