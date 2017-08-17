@@ -131,8 +131,12 @@ module.exports = function (grunt, config) {
           stdio: 'pipe'
         };
         var child = escalatedSpawn(process.argv[0], process.argv.slice(1), opts);
+        //Redirect input.
+        process.stdin.pipe(child.stdin);
+        //Redirect output.
         child.stdout.pipe(process.stdout);
         child.stderr.pipe(process.stderr);
+        //Setup events.
         child.on('exit', function (code) {
           done(null, true);
         });
