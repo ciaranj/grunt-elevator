@@ -17,11 +17,10 @@ if (!String.prototype.hashCode) {
   };
 }
 
-//This file only exists for a moment and is hopefully unique enough.
-//Usually we would use the PID but this changes between normal and elevated states.
-var envFile = path.join(process.env["TEMP"], "path." + process.argv.join().hashCode() + ".tmp");
-
 module.exports = function (grunt, config) {
+  //This file only exists for a moment and is hopefully unique enough.
+  //Usually we would use the PID but this changes between normal and elevated states.
+  var envFile = config.env.tmp || path.join("." + process.argv.join().hashCode() + ".env");
 
   var save_env = function () {
     if (grunt.file.exists(envFile)) {

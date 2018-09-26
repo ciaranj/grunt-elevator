@@ -14,6 +14,7 @@ module.exports = function (grunt) {
     env: {
       //We need to copy these variables to the elevated process.
       names: ["HOME", "PATH", "SSH_AUTH_SOCK", "SSH_AGENT_PID"],
+      tmp: "c:\\temp\\elevatedEnv.tmp", // optional - defaults to working directory
       cb: function (name, value) {
         if (name == "HOME" && process.env.HOMESHARE) {
           //We substitute HOME with HOMESHARE as the elevated process cannot access U:\
