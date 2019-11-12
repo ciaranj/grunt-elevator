@@ -1,6 +1,6 @@
 {
   "name": "grunt-elevator",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "description": "Automatically elevate your grunt script's UAC privileges in windows",
   "main": "index.js",
   "scripts": {
@@ -17,11 +17,16 @@
     "grunt"
   ],
   "author": "ciaranj@gmail.com",
-  "contributors":[{
-    "name":"Aidan Gilbert","email":"aidan.gilbert@thisisnumero.com"
-  },{
-    "name":"Ashley Shelton","email":"ashley.shelton@thisisnumero.com"
-  }],
+  "contributors": [
+    {
+      "name": "Aidan Gilbert",
+      "email": "aidan.gilbert@thisisnumero.com"
+    },
+    {
+      "name": "Ashley Shelton",
+      "email": "ashley.shelton@thisisnumero.com"
+    }
+  ],
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/ciaranj/grunt-elevator/issues"

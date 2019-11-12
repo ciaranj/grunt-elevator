@@ -21,7 +21,7 @@ module.exports = function (grunt, config) {
   //This file only exists for a moment and is hopefully unique enough.
   //Usually we would use the PID but this changes between normal and elevated states.
   var envFile = config.env.tmp || path.join("." + process.argv.join().hashCode() + ".env");
-
+  const writeHeader= config.writeHeader;
   var save_env = function () {
     if (grunt.file.exists(envFile)) {
       grunt.verbose.writeln("Environment has already been saved.");
@@ -123,6 +123,12 @@ module.exports = function (grunt, config) {
       catch (e) {
         // Assuming we get an error here because access is denied.
         grunt.log.warn("User elevation of Gruntfile is required");
+        if( writeHeader === true {
+            const tmpName= grunt.task.current.nameArgs;
+            grunt.task.current.nameArgs= "Elevated gruntfile";
+            grunt.log.header("Elevating Gruntfile");
+            grunt.task.current.nameArgs= tmpName;
+        }
         grunt.task.clearQueue();
         save_env();
         var opts = {

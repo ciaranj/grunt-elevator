@@ -29,7 +29,11 @@ module.exports = function (grunt) {
     triggers: [
       /activate/,
       /deactivate/
-    ]
+    ],
+    /* Set this to true if you need to get grunt-elevator working with grunt extensions
+       that hook into grunt.log.header e.g. grunt-timer.  Otherwise leave it false or unset (the default)
+    */
+    writeHeader: true 
   });
 };
 ```
