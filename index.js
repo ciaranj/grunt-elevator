@@ -123,7 +123,7 @@ module.exports = function (grunt, config) {
       catch (e) {
         // Assuming we get an error here because access is denied.
         grunt.log.warn("User elevation of Gruntfile is required");
-        if( writeHeader === true {
+        if( writeHeader === true ) {
             const tmpName= grunt.task.current.nameArgs;
             grunt.task.current.nameArgs= "Elevated gruntfile";
             grunt.log.header("Elevating Gruntfile");

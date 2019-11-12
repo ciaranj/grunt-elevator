@@ -1,6 +1,6 @@
 {
   "name": "grunt-elevator",
-  "version": "2.1.1",
+  "version": "2.1.2",
   "description": "Automatically elevate your grunt script's UAC privileges in windows",
   "main": "index.js",
   "scripts": {
